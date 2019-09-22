@@ -1,0 +1,153 @@
+#include <iostream>
+#include <windows.h>
+#include <conio.h>
+#include <random>
+#include <time.h>
+
+using namespace std;
+
+void map();
+int moving(int previsios_direction);
+int tailtracking();
+
+int main()
+{
+    map();
+
+    return 0;
+}
+void map(){
+    bool Game_Over = false;
+    bool snake[5][5] = {0};
+    int length = 1;
+
+    int direction = 1;
+    /*the snakes direction of moving
+       1-right
+       2-down
+       3-left
+       4-up*/
+
+    int x_snake_head,y_snake_head;
+    int x_snake_tail,y_snake_tail;
+
+
+    srand(time(NULL));
+
+    //random starting location
+    snake[(y_snake_head = rand()%5)][(x_snake_head = rand()%5)] = 1;
+    y_snake_tail = y_snake_head;
+    x_snake_tail = x_snake_head;
+
+    //random location for the 0
+    int x_point = rand() % 5;
+    int y_point = rand() % 5;
+
+    while(!Game_Over){
+        int coordinates[2][length] = {0};
+
+        int snake_part = 0;
+
+
+        cout << "# # # # # # #" << endl;
+
+        for(int i = 0 ; i < 5 ; i++){
+           cout << "# " ;
+            for(int j = 0 ; j < 5 ; j++){
+                if(snake[i][j]){
+                  cout << "* ";
+                    snake_part++;
+                }else
+                if(i == y_point && j == x_point){
+                    cout << "0 ";
+
+                }
+                else{
+                    cout << "  ";
+                }
+
+            }
+            cout << "#" << endl;
+        }
+
+       cout << "# # # # # # #" << endl;
+       cout << length;
+
+
+
+        //movement
+
+
+
+
+
+
+        switch((direction = moving(direction))){
+        case 1:
+            (x_snake_head < 4) ? snake[y_snake_head][++x_snake_head] = 1 : snake[y_snake_head][x_snake_head = 0] = 1;
+            break;
+        case 2:
+            (y_snake_head < 4) ? snake[++y_snake_head][x_snake_head] = 1 : snake[y_snake_head = 0][x_snake_head] = 1;
+            break;
+        case 3:
+            (x_snake_head > 0) ? snake[y_snake_head][--x_snake_head] = 1 : snake[y_snake_head][x_snake_head = 4] = 1;
+            break;
+        case 4:
+            (y_snake_head > 0) ? snake[--y_snake_head][x_snake_head] = 1 : snake[y_snake_head = 4][x_snake_head] = 1;
+            break;
+        }
+        if(x_point==x_snake_head && y_point==y_snake_head){
+                                length++;
+                                x_point = rand() % 5;
+                                y_point = rand() % 5;
+                }else
+                if(length > 1){
+                    snake[y_snake_tail][x_snake_tail] = 0;
+                    if(coordinates[0][0] == y_snake_head && coordinates[1][0] == x_snake_head)
+                    {
+                        x_snake_tail = coordinates[1][snake_part - 1];
+                        y_snake_tail = coordinates[0][snake_part - 1];
+                    }else{
+                        x_snake_tail = coordinates[1][1];
+                        y_snake_tail = coordinates[0][1];
+                    }
+
+                }else{
+                    snake[y_snake_tail][x_snake_tail] = 0;
+                    x_snake_tail = x_snake_head;
+                    y_snake_tail = y_snake_head;
+                }
+
+        for(int i = 0 ; i < snake_part ; i++){
+            if(coordinates[0][snake_part] == y_snake_head && coordinates[1][snake_part] == x_snake_head){
+                Game_Over == true;
+            }
+        }
+
+        Sleep(1000);
+        system("cls");
+    }
+
+
+
+}
+
+int moving(int previsios_direction){
+    if(GetAsyncKeyState(VK_RIGHT)){
+        return 1;
+    }else
+    if(GetAsyncKeyState(VK_DOWN)){
+        return 2;
+    }else
+    if(GetAsyncKeyState(VK_LEFT)){
+        return 3;
+    }else
+    if(GetAsyncKeyState(VK_UP)){
+        return 4;
+    }else
+    {
+        return previsios_direction;
+    }
+}
+
+
