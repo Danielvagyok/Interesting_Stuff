@@ -1,0 +1,40 @@
+void qsort(vector<int>& arr , int left ,int right)
+{
+    if(left >= right)
+    {
+        return;
+    }
+
+    bool first_time = true;
+    int pivot = arr[right];
+    int i = left , j ;
+    while(i < right)
+    {
+
+        if(first_time){
+            while(arr[i] < pivot)
+                i++;
+
+            j = i;
+            first_time = false;
+        }
+
+        while(arr[i] > pivot)
+            i++;
+
+        if(j!=i)
+        {
+            arr[i] = arr[i] + arr[j];
+            arr[j] = arr[i] - arr[j];
+            arr[i] = arr[i] - arr[j];
+            j++;
+            kiir(arr);
+        }else if(i == right)
+            j++;
+        i++;
+
+    }
+
+    qsort(arr,left,j-2);
+    qsort(arr,j,right);
+}
