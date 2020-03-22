@@ -1,0 +1,74 @@
+class Solution {
+private:
+vector<int> primes;
+
+bool prime(int x)
+{
+  for(int i = 2 ; i <= x/2 ; i++)
+  {
+      if(x%primes[i] == 0)
+        {
+            return false;
+        }
+  }
+  return true;
+}
+
+
+    
+public:
+    Solution()
+{
+    for(int i = 2 ; i < 50000 ; i++)
+    {
+        if(prime(i))
+        {
+            primes.push_back(i);
+        }
+    }
+}
+
+    
+    int sumFourDivisors(vector<int>& nums) {
+        int powercount[2][3];
+        int n = 0;
+        int fourdiv;
+        for(int k = 0 ; k < nums.size() ; k++)
+        {
+            for(int i = 0 ; i < primes.size() ; i++)
+            {
+                 for(int a = 0 ; a < 2 ; a++)
+                 {
+                     for(int b = 0 ;b < 3 ; b++)
+                         powercount[a][b] = 0;
+                 }
+                     if(nums[k]%primes[i] == 0){
+                  powercount[0][n] = primes[i];
+                    while(nums[k]%primes[i] == 0)
+                    {
+                        powercount[1][n]++;
+                        nums[i] = nums[k]/primes[i];
+                    }
+                    n++;
+                }
+
+                if((powercount[0][2] != 0) || (powercount[1][n] > 3) )
+                   {
+                       break;
+                   }else{
+                       fourdiv = nums[k];
+                       k = nums.size();
+                       break;
+                   }  
+             }
+           }
+           if(powercount[0][1] != 0){
+               return ((powercount[0][1]*powercount[0][1] - 1)/(powercount[0][1]-1))*((powercount[0][0]*powercount[0][0] - 1)/(powercount[0][0]-1));
+           } 
+        return (powercount[0][0]*powercount[0][0]*powercount[0][0]*powercount[0][0]-1)/(powercount[0][0]-1);
+            
+       }
+                   
+    
+    
+};
