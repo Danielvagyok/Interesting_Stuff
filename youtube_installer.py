@@ -1,12 +1,24 @@
 from youtubesearchpython.__future__ import VideosSearch
 
 from youtube_dl import YoutubeDL
-
+import os
 import asyncio
 
-audio_downloader = YoutubeDL({
-    'format' : 'bestaudio'
-})
+#make new directory for the downloads
+current_directory = os.getcwd()
+new_directory = "My_Music"
+new_directory_path = os.path.join(current_directory,new_directory)
+try:
+    os.mkdir(new_directory_path)
+except:
+    pass
+finally:
+    audio_downloader = YoutubeDL({
+        'outtmpl': new_directory_path + '/%(title)s.%(ext)s',
+        'format' : 'bestaudio'
+    })
+
+
 
 URLs = []
 
@@ -38,8 +50,7 @@ def download_sound(number_of_song):
 
 async def main():
     while True:
-
-        show_more_results = True
+        number_of_song  = "0"
 
         #asks the user the name of the video
         name_of_song = get_input()
@@ -50,7 +61,7 @@ async def main():
         #an object which is searching
         videosSearch = search_for_music(name_of_song)
 
-        while show_more_results:
+        while number_of_song == "0":
             #start a new list of URLs
             URLs.clear()
 
@@ -59,9 +70,6 @@ async def main():
 
             #the user selects the number of the video
             number_of_song = select_song()
-
-            if number_of_song != "0": #exit condition - stop displaying more titles
-                show_more_results = False
 
         #does not download anything
         if number_of_song == "":
