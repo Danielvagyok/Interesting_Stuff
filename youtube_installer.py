@@ -14,7 +14,12 @@ except:
     pass
 finally:
     audio_downloader = YoutubeDL({
-        'outtmpl': new_directory_path + '/%(title)s.%(ext)s',
+        """
+        for original format:
+        'outtmpl': new_directory_path + '/%(title)s.%(ext)s'
+        """
+        #for mp3 format:
+        'outtmpl': new_directory_path + '/%(title)s.mp3',
         'format' : 'bestaudio'
     })
 
