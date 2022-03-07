@@ -1,0 +1,59 @@
+/* 1. Implement the Bubble - Sort method using a flag indicator and optimize the inner loop.Write the function that
+orders an array of integer values read from the keyboard.Display the original and the sorted arrays. */
+
+#include <iostream>
+
+using namespace std;
+
+struct Array {
+	int* nums;
+	int dim;
+	Array(int n) : nums(new int[n]), dim(n) {
+		//read from the keyboard
+		for (int i = 0; i < dim; i++)
+		{
+			printf("Element %d : ", i);
+			cin >> nums[i];
+		}
+	}
+};
+
+Array create_array();
+int get_dimension_of_array();
+void sort_array(int *p, int dim);
+
+int main()
+{
+	Array array= create_array();
+	sort_array(array.nums, array.dim);
+}
+
+Array create_array()
+{
+	int n = get_dimension_of_array();
+	Array array = Array(n);
+	return array;
+}
+
+int get_dimension_of_array() {
+	cout << "Number if elements : ";
+	int n;
+	cin >> n;
+	return n;
+}
+
+void sort_array(int* p, int dim)
+{
+	bool flag; //it is 1, untill there is at least 1 swap
+
+	do {
+		flag = 0;
+		for (int i = 0; i < dim - 1; i++)
+		{
+			if (p[i] > p[i + 1]) {
+				swap(p[i], p[i + 1]);
+				flag = 1;
+			}
+			}
+	} while (flag == 1);
+}
